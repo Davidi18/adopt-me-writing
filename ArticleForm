@@ -20,7 +20,6 @@
                 <label for="writerId" class="block text-sm font-medium text-gray-700">Writer</label>
                 <select id="writerId" name="writerId" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
                     <option value="">Select a writer</option>
-                    <!-- Writers will be populated here -->
                 </select>
             </div>
             <div>
@@ -45,11 +44,11 @@
             var select = document.getElementById('writerId');
             writers.forEach(function(writer) {
                 var option = document.createElement('option');
-                option.value = writer[0];
-                option.text = writer[1];
+                option.value = writer.id;
+                option.text = writer.name;
                 select.appendChild(option);
             });
-        }).getWriters();
+        }).getWritersForDropdown();
 
         // Form submission
         document.getElementById('articleForm').onsubmit = function(e) {
@@ -62,7 +61,6 @@
             google.script.run
                 .withSuccessHandler(function(result) {
                     closeForm();
-                    google.script.host.close();
                 })
                 .withFailureHandler(function(error) {
                     showError(error);
