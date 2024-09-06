@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <base target="_top">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-6xl mx-auto">
+        <h1 class="text-3xl font-bold mb-8 text-gray-800">לוח בקרה לכותב</h1>
+        
+        <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+            <h2 class="text-xl font-semibold mb-4 text-gray-700">המאמרים שלי</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full table-auto">
+                    <thead class="bg-gray-200">
+                        <tr>
+                            <th class="px-4 py-2 text-right text-gray-600">כותרת</th>
+                            <th class="px-4 py-2 text-right text-gray-600">סטטוס</th>
+                            <th class="px-4 py-2 text-right text-gray-600">תאריך יעד</th>
+                            <th class="px-4 py-2 text-right text-gray-600">פעולות</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <? for (var i = 0; i < articles.length; i++) { ?>
+                            <tr class="border-b">
+                                <td class="px-4 py-2"><?= articles[i][1] ?></td>
+                                <td class="px-4 py-2">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full <?= getStatusColor(articles[i][4]) ?>">
+                                        <?= articles[i][4] ?>
+                                    </span>
+                                </td>
+                                <td class="px-4 py-2"><?= formatDate(articles[i][6]) ?></td>
+                                <td class="px-4 py-2">
+                                    <button onclick="updateStatus('<?= articles[i][0] ?>')" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded">
+                                        עדכן סטטוס
+                                    </button>
+                                </td>
+                            </tr>
+                        <? } ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    function updateStatus(articleId) {
+        var newStatus = prompt('הכנס סטטוס חדש:');
+        if (newStatus) {
+            google.script.run.withSuccessHandler(function() {
+                alert('הסטטוס עודכן בהצלחה');
+                location.reload();
+            }).updateArticleStatus(articleId, newStatus);
+        }
+    }
+    </script>
+</body>
+</html>
