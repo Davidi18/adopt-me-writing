@@ -8,18 +8,21 @@ function onOpen() {
 }
 
 function openDashboard() {
-  try {
-    var template = HtmlService.createTemplateFromFile('Dashboard');
+  var userRole = getUserRole();
+  var template = HtmlService.createTemplateFromFile(userRole === 'מנהל' ? 'DashboardAdmin' : 'DashboardWriter');
+  
+  if (userRole === 'מנהל') {
     template.writers = getWriters();
     template.articles = getArticles();
-    var html = template.evaluate()
-      .setWidth(800)
-      .setHeight(600);
-    SpreadsheetApp.getUi().showModalDialog(html, 'Content Management Dashboard');
-  } catch (error) {
-    Logger.log('Error in openDashboard: ' + error.toString());
-    SpreadsheetApp.getUi().alert('Error opening dashboard: ' + error.message);
+  } else {
+    var userEmail = getCurrentUserEmail();
+    template.articles = getArticlesByWriter(userEmail);
   }
+
+  var html = template.evaluate()
+    .setWidth(800)
+    .setHeight(600);
+  SpreadsheetApp.getUi().showModalDialog(html, 'לוח בקרה');
 }
 
 function openWriterForm() {
