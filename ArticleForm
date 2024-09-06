@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <base target="_top">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 p-6">
+    <div class="max-w-md mx-auto bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-semibold mb-4 text-gray-800">Add New Article</h2>
+        <form id="articleForm" class="space-y-4">
+            <div>
+                <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
+                <input type="text" id="title" name="title" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+            </div>
+            <div>
+                <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                <textarea id="description" name="description" rows="3" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+            </div>
+            <div>
+                <label for="writerId" class="block text-sm font-medium text-gray-700">Writer</label>
+                <select id="writerId" name="writerId" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                    <option value="">Select a writer</option>
+                    <!-- Writers will be populated here -->
+                </select>
+            </div>
+            <div>
+                <label for="dueDate" class="block text-sm font-medium text-gray-700">Due Date</label>
+                <input type="date" id="dueDate" name="dueDate" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+            </div>
+            <div>
+                <label for="tags" class="block text-sm font-medium text-gray-700">Tags (comma separated)</label>
+                <input type="text" id="tags" name="tags" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+            </div>
+            <div>
+                <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Add Article
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Populate writers dropdown
+        google.script.run.withSuccessHandler(function(writers) {
+            var select = document.getElementById('writerId');
+            writers.forEach(function(writer) {
+                var option = document.createElement('option');
+                option.value = writer[0];
+                option.text = writer[1];
+                select.appendChild(option);
+            });
+        }).getWriters();
+
+        // Form submission
+        document.getElementById('articleForm').onsubmit = function(e) {
+            e.preventDefault();
+            var form = this;
+            var submitButton = form.querySelector('button[type="submit"]');
+            submitButton.disabled = true;
+            submitButton.textContent = 'Adding...';
+
+            google.script.run
+                .withSuccessHandler(function(result) {
+                    closeForm();
+                    google.script.host.close();
+                })
+                .withFailureHandler(function(error) {
+                    showError(error);
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Add Article';
+                })
+                .addArticle(form);
+        };
+
+        function closeForm() {
+            google.script.host.close();
+        }
+
+        function showError(error) {
+            var errorDiv = document.createElement('div');
+            errorDiv.className = 'bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-4';
+            errorDiv.textContent = 'Error: ' + error.message;
+            document.querySelector('form').appendChild(errorDiv);
+        }
+
+        // Set minimum date for due date input
+        document.getElementById('dueDate').min = new Date().toISOString().split('T')[0];
+    </script>
+</body>
+</html>
