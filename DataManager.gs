@@ -1,30 +1,33 @@
 function getWriters() {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('כותבים');
   if (!sheet) {
-    Logger.log('Writers sheet not found');
+    Logger.log('כותבים sheet not found');
     return [];
   }
   var lastRow = sheet.getLastRow();
   var lastColumn = sheet.getLastColumn();
   var data = sheet.getRange(1, 1, lastRow, lastColumn).getValues();
-  Logger.log('Retrieved ' + (data.length - 1) + ' writers'); // Log for debugging
+  Logger.log('Retrieved ' + (data.length - 1) + ' writers');
   return data.slice(1); // Returns all rows except the header
 }
 
 function getArticles() {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('מאמרים');
   if (!sheet) {
-    Logger.log('Articles sheet not found');
+    Logger.log('מאמרים sheet not found');
     return [];
   }
-  var data = sheet.getDataRange().getValues();
+  var lastRow = sheet.getLastRow();
+  var lastColumn = sheet.getLastColumn();
+  var data = sheet.getRange(1, 1, lastRow, lastColumn).getValues();
+  Logger.log('Retrieved ' + (data.length - 1) + ' articles');
   return data.slice(1); // Returns all rows except the header
 }
 
 function addWriter(formObject) {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('כותבים');
   if (!sheet) {
-    throw new Error('Writers sheet not found');
+    throw new Error('כותבים sheet not found');
   }
   var newRow = [
     generateUniqueId(),
@@ -42,7 +45,7 @@ function addWriter(formObject) {
 function addArticle(formObject) {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('מאמרים');
   if (!sheet) {
-    throw new Error('Articles sheet not found');
+    throw new Error('מאמרים sheet not found');
   }
   var newRow = [
     generateUniqueId(),
@@ -116,4 +119,17 @@ function getArticleById(articleId) {
 function getWriterName(writerId) {
   var writer = getWriterById(writerId);
   return writer ? writer[1] : 'Unknown';
+}
+
+function getWritersForDropdown() {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('כותבים');
+  if (!sheet) {
+    Logger.log('כותבים sheet not found');
+    return [];
+  }
+  var data = sheet.getDataRange().getValues();
+  // Assuming the ID is in column A and the full name is in column B
+  return data.slice(1).map(function(row) {
+    return {id: row[0], name: row[1]};
+  });
 }
