@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <base target="_top">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-6xl mx-auto">
+        <h1 class="text-3xl font-bold mb-8 text-gray-800">Content Management Dashboard</h1>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold mb-4 text-gray-700">Quick Stats</h2>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="text-center">
+                        <p class="text-3xl font-bold text-blue-600"><?= writers.length ?></p>
+                        <p class="text-gray-600">Total Writers</p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-3xl font-bold text-green-600"><?= articles.length ?></p>
+                        <p class="text-gray-600">Total Articles</p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-3xl font-bold text-yellow-600"><?= articles.filter(function(a) { return a[4] === 'In Progress'; }).length ?></p>
+                        <p class="text-gray-600">Articles In Progress</p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-3xl font-bold text-red-600"><?= articles.filter(function(a) { return new Date(a[6]) < new Date() && a[4] !== 'Completed'; }).length ?></p>
+                        <p class="text-gray-600">Overdue Articles</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold mb-4 text-gray-700">Recent Activity</h2>
+                <ul class="space-y-2">
+                    <li class="text-gray-600">New article "SEO Best Practices" added</li>
+                    <li class="text-gray-600">Writer "John Doe" completed "Content Marketing Strategies"</li>
+                    <li class="text-gray-600">New writer "Jane Smith" joined the team</li>
+                    <li class="text-gray-600">Article "Social Media Trends" is overdue</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+            <h2 class="text-xl font-semibold mb-4 text-gray-700">Writers (Total: <?= writers.length ?>)</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full table-auto">
+                    <thead class="bg-gray-200">
+                        <tr>
+                            <th class="px-4 py-2 text-left text-gray-600">Name</th>
+                            <th class="px-4 py-2 text-left text-gray-600">Email</th>
+                            <th class="px-4 py-2 text-left text-gray-600">Specialties</th>
+                            <th class="px-4 py-2 text-left text-gray-600">Articles</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <? for (var i = 0; i < writers.length; i++) { ?>
+                            <tr class="border-b">
+                                <td class="px-4 py-2"><?= writers[i][1] ?></td>
+                                <td class="px-4 py-2"><?= writers[i][2] ?></td>
+                                <td class="px-4 py-2"><?= writers[i][4] ?></td>
+                                <td class="px-4 py-2"><?= articles.filter(function(a) { return a[3] === writers[i][0]; }).length ?></td>
+                            </tr>
+                        <? } ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-xl font-semibold mb-4 text-gray-700">Articles</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full table-auto">
+                    <thead class="bg-gray-200">
+                        <tr>
+                            <th class="px-4 py-2 text-left text-gray-600">Title</th>
+                            <th class="px-4 py-2 text-left text-gray-600">Writer</th>
+                            <th class="px-4 py-2 text-left text-gray-600">Status</th>
+                            <th class="px-4 py-2 text-left text-gray-600">Due Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <? for (var i = 0; i < articles.length; i++) { ?>
+                            <tr class="border-b">
+                                <td class="px-4 py-2"><?= articles[i][1] ?></td>
+                                <td class="px-4 py-2"><?= getWriterName(articles[i][3]) ?></td>
+                                <td class="px-4 py-2">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full <?= getStatusColor(articles[i][4]) ?>">
+                                        <?= articles[i][4] ?>
+                                    </span>
+                                </td>
+                                <td class="px-4 py-2"><?= formatDate(articles[i][6]) ?></td>
+                            </tr>
+                        <? } ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
