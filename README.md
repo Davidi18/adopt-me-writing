@@ -1,38 +1,63 @@
-# Content Management System
+# מערכת ניהול תוכן לכותבים ומאמרים
 
-This is a Google Apps Script project for managing writers and articles using Google Sheets as a database.
+## מצב נוכחי
 
-## Files
+- **פלטפורמה**: Google Apps Script עם Google Sheets כמסד נתונים
+- **פונקציונליות עיקרית**:
+  - הצגת לוח מחוונים (Dashboard) עם סטטיסטיקות על כותבים ומאמרים
+  - הוספת כותבים חדשים
+  - הוספת מאמרים חדשים
+  - קישור מאמרים לכותבים ספציפיים
 
-- `Code.gs`: Main script file with menu creation and general functions
-- `DataManager.gs`: Handles data operations with Google Sheets
-- `Utilities.gs`: Contains utility functions used across the project
-- `Dashboard.html`: Main dashboard interface
-- `WriterForm.html`: Form for adding new writers
-- `ArticleForm.html`: Form for adding new articles
+- **קבצים עיקריים**:
+  - `Code.gs`: קובץ ראשי עם פונקציות כלליות ויצירת תפריט
+  - `DataManager.gs`: ניהול נתונים (קריאה/כתיבה מ/אל גליונות)
+  - `Utilities.gs`: פונקציות עזר שימושיות
+  - `Dashboard.html`: ממשק משתמש ללוח המחוונים
+  - `WriterForm.html`: טופס להוספת כותב חדש
+  - `ArticleForm.html`: טופס להוספת מאמר חדש
 
-## Sheet Names
+- **גליונות Google Sheets**:
+  - `כותבים`: מכיל מידע על הכותבים
+  - `מאמרים`: מכיל מידע על המאמרים
 
-The project uses the following sheet names:
-- Writers: `כותבים`
-- Articles: `מאמרים`
+## רעיונות לפיתוח עתידי
 
-## Current State
+1. **שדרוג הפלטפורמה**:
+   - העברה ל-Replit עם Firebase כמסד נתונים
+   - שימוש ב-Google Cloud Platform לפתרון מקיף יותר
 
-The basic functionality is implemented, including:
-- Displaying writers and articles on the dashboard
-- Adding new writers and articles
-- Basic error handling
+2. **הרחבת פונקציונליות**:
+   - הוספת יכולת עריכה למאמרים ולכותבים קיימים
+   - מערכת ניהול משימות לכותבים
+   - מעקב אחר התקדמות מאמרים
+   - מערכת התראות לתאריכי יעד מתקרבים
 
-## Next Steps
+3. **שיפור ממשק משתמש**:
+   - הוספת גרפים ותרשימים ללוח המחוונים
+   - ממשק משתמש רספונסיבי לשימוש במובייל
+   - אפשרויות סינון וחיפוש מתקדמות
 
-- Implement editing and deleting of writers and articles
-- Add more detailed views for individual writers and articles
-- Implement sorting and filtering in the dashboard
-- Add charts or graphs to visualize data
+4. **אבטחה ואימות**:
+   - הוספת מערכת הרשאות למשתמשים שונים
+   - אימות דו-שלבי
 
-## Notes
+5. **אינטגרציות**:
+   - חיבור למערכות ניהול תוכן חיצוניות
+   - אינטגרציה עם כלי כתיבה ועריכה
 
-Last updated: [Current Date]
+## פעולות לפיתוח בטווח הקרוב
 
-Remember to update the sheet names in the script if they change in the future.
+1. שיפור מערכת הדיווח והסטטיסטיקות בלוח המחוונים
+2. הוספת אפשרות לעריכת פרטי כותבים ומאמרים קיימים
+3. יצירת מנגנון לסינון ומיון מאמרים לפי סטטוס, תאריך, או כותב
+4. הוספת מערכת התראות אוטומטיות לתאריכי יעד מתקרבים
+5. שיפור העיצוב והנגישות של ממשק המשתמש
+6. הוספת בדיקות אוטומטיות (unit tests) לשיפור אמינות הקוד
+7. יצירת תיעוד מפורט יותר לפונקציות ולתהליכי העבודה במערכת
+
+## הערות נוספות
+
+- המערכת כרגע פועלת בסביבת Google Workspace ודורשת הרשאות מתאימות.
+- יש לשים לב לאבטחת מידע ולהגבלת הגישה לגליונות הנתונים.
+- מומלץ לבצע גיבויים תקופתיים של הנתונים.
