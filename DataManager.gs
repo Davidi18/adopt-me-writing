@@ -133,3 +133,21 @@ function getWritersForDropdown() {
     return {id: row[0], name: row[1]};
   });
 }
+
+function getArticlesByWriter(email) {
+  var articles = getArticles();
+  return articles.filter(function(article) {
+    return getWriterEmail(article[3]) === email;
+  });
+}
+
+function updateArticleStatus(articleId, newStatus) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('מאמרים');
+  var data = sheet.getDataRange().getValues();
+  for (var i = 1; i < data.length; i++) {
+    if (data[i][0] === articleId) {
+      sheet.getRange(i+1, 5).setValue(newStatus); // מניח שהסטטוס בעמודה החמישית
+      break;
+    }
+  }
+}
