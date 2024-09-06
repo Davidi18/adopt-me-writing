@@ -2,8 +2,18 @@ function generateUniqueId() {
   return Utilities.getUuid();
 }
 
-function formatDate(date) {
-  return Utilities.formatDate(date, Session.getScriptTimeZone(), "MMM dd, yyyy");
+function formatDate(dateValue) {
+  if (!(dateValue instanceof Date)) {
+    // If dateValue is not already a Date object, try to create one
+    dateValue = new Date(dateValue);
+  }
+  
+  // Check if the date is valid
+  if (isNaN(dateValue.getTime())) {
+    return 'Invalid Date';
+  }
+  
+  return Utilities.formatDate(dateValue, Session.getScriptTimeZone(), "MMM dd, yyyy");
 }
 
 function validateEmail(email) {
