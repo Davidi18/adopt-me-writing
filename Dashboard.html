@@ -89,7 +89,7 @@
                                         <?= articles[i][4] ?>
                                     </span>
                                 </td>
-                                <td class="px-4 py-2"><?= formatDate(articles[i][6]) ?></td>
+                                <td class="px-4 py-2"><?= formatDate(articles[i][6]) || 'N/A' ?></td>
                             </tr>
                         <? } ?>
                     </tbody>
